@@ -1,0 +1,76 @@
+# Contributing to Open Location Code
+
+The Open Location Code project strongly encourages technical contributions.
+
+We hope you'll become an ongoing participant in our open source community but we also welcome one-off contributions for the issues you're particularly passionate about.
+
+- [Filing issues](#filing-issues)
+  * [Bugs](#bugs)
+  * [Suggestions](#suggestions)
+- [Contributing code](#contributing-code)
+- [Contributing a new implementation](#contributing-a-new-implementation)
+- [Contributor License Agreement](#contributor-license-agreement)
+- [Ongoing participation](#ongoing-participation)
+  * [Discussion channels](#discussion-channels)
+
+## Filing issues
+
+### Bugs
+
+If you find a bug in the Swift library, please [file an issue](https://github.com/google/open-location-code-swift/issues/new).
+
+Issues with the OLC standard, or other implementations, please
+[file an issue in the main repo](https://github.com/google/open-location-code/issues/new).
+Members of the community are regularly monitoring issues and will try to fix open bugs quickly.
+
+The best bug reports provide a detailed description of the issue, step-by-step instructions for predictably reproducing the issue, and possibly even a working example that demonstrates the issue.
+
+Please note that questions about how to use Open Location Code or other general questions should be asked on the [Open Location Code Google Group](https://groups.google.com/forum/#!forum/open-location-code)<!-- Uncomment if this becomes sensible --><!-- or [Stack Overflow under the Open Location Code tag](http://stackoverflow.com/questions/tagged/open-location-code) -->
+instead of filing an issue here.
+
+### Suggestions
+
+The Open Location Code project is meant to evolve with feedback.  The project and its users appreciate your thoughts on ways to improve the design or features or creative ways to use the codes.
+
+To make a suggestion [file an issue](https://github.com/google/open-location-code/issues/new).
+
+If you are intending to implement, please see the [Contributing code](#contributing-code) section below for next steps.
+
+If you are adding Open Location Codes to your project, please contact the [Open Location Code Google Group](https://groups.google.com/forum/#!forum/open-location-code) so we can suggest how you can make the most of the codes.
+
+## Contributing code
+
+The Open Location Code project accepts and greatly appreciates code contributions!
+
+If you are contributing code to the project consider [joining the Open Location Code project on GitHub](https://goo.gl/forms/T65peVtfQfEoDWeD3).
+
+A few things to note:
+
+* The Open Location Code project follows the [fork & pull](https://help.github.com/articles/using-pull-requests/#fork--pull) model for accepting contributions.
+* We follow [Google's Python Style Guide](https://google.github.io/styleguide/pyguide.html).  More generally make sure to follow the same comment and coding style as the rest of the project.
+* Include [tests](TESTING.md) when contributing code.  There are tests that you can use as examples.
+
+## Contributing a new implementation
+
+Follow this process for contributing a new implementation:
+
+* Look at the existing implementations, to get an idea of the usage and how much work is involved.
+* If you copy the code structure and algorithms from an existing implementation, you'll have a much shorter review cycle.
+* [Create a new GitHub issue](https://github.com/google/open-location-code/issues/new) to start discussion of the new feature.
+* Follow the guidelines for [Contributing code](#contributing-code) described above.
+
+## Contributor License Agreement
+
+The Open Location Code project hosted at GitHub requires all contributors to sign a Contributor License Agreement ([individual](https://developers.google.com/open-source/cla/individual) or [corporation](https://developers.google.com/open-source/cla/corporate)) in order to protect contributors, users and Google in issues of intellectual property.
+
+When you create a Pull Request a check will be run to ensure that you have signed the CLA.  Make sure that you sign the CLA with the same email address you associate with your commits (likely via the `user.email` Git config as described on GitHub's [Set up Git](https://help.github.com/articles/set-up-git/) page).
+
+## Ongoing participation
+
+We actively encourage ongoing participation by community members.
+
+### Discussion channels
+
+Technical issues, designs, etc. are discussed on [GitHub issues](https://github.com/google/open-location-code-swift/issues) and [pull requests](https://github.com/google/open-location-code-swift/pulls),
+or the [Open Location Code Google Group](https://groups.google.com/forum/#!forum/open-location-code)<!-- Uncomment if this becomes sensible --><!-- and [Stack Overflow under the Open Location Code tag](http://stackoverflow.com/questions/tagged/open-location-code) -->.
+
