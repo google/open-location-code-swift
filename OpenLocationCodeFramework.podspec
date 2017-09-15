@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
   s.name         = "OpenLocationCodeFramework"
   s.module_name  = "OpenLocationCode"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "Open Location Code conversion library for Swift and Objective-C"
 
   s.description  = <<-DESC
@@ -17,14 +17,14 @@ and watchOS.
 
                    DESC
 
-  s.homepage     = "htts://openlocationcode.com"
+  s.homepage     = "http://openlocationcode.com"
   s.license      = "Apache License, Version 2.0"
   s.authors      = { "William Denniss" => "wdenniss@google.com",
                    }
 
   s.platforms    = { :ios => "8.0", :osx => "10.9", :watchos => "2.0", :tvos => "9.0" }
 
-  s.source       = { :git => "https://github.com/google/open-location-code-swift.git", :tag => "1.0.0" }
+  s.source       = { :git => "https://github.com/google/open-location-code-swift.git", :tag => s.version }
 
   s.pod_target_xcconfig = {
     # Treat warnings as errors.
