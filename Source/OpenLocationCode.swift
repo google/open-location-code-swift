@@ -698,12 +698,11 @@ public class OpenLocationCode {
     // The resolution (height and width) of the padded area in degrees.
     let resolution: Double = pow(20, Double(2 - (paddingLength / 2)))
     // Distance from the center to an edge (in degrees).
-    let areaToEdge: Double = resolution / 2.0
+    let halfResolution: Double = resolution / 2.0
     // Encodes the reference location, uses it to fill in the gaps of the
     // given short code, creating a full code, then decodes it.
     guard let encodedReferencePoint =
-        encode(latitude: referenceLatitude, longitude: referenceLongitude)
-        else {
+        encode(latitude: referenceLatitude, longitude: referenceLongitude) else {
       return nil
     }
     let expandedCode = encodedReferencePoint[0..<paddingLength] + shortcode
@@ -714,24 +713,26 @@ public class OpenLocationCode {
     var longitudeCenter = codeArea.longitudeCenter
 
     // How many degrees latitude is the code from the reference? If it is more
-    // than half the resolution, we need to move it east or west.
-    var degreesDifference = latitudeCenter - referenceLatitude
-    if degreesDifference > areaToEdge {
-      // If the center of the short code is more than half a cell east,
-      // then the best match will be one position west.
-      latitudeCenter -= resolution
-    } else if degreesDifference < -areaToEdge {
-      // If the center of the short code is more than half a cell west,
-      // then the best match will be one position east.
-      latitudeCenter += resolution
+    // than half the resolution, we need to move it north or south but keep it
+    // within -90 to 90 degrees.
+    if referenceLatitude + halfResolution < latitudeCenter
+       && latitudeCenter - resolution >= -kLatitudeMax {
+        // If the proposed code is more than half a cell north of the reference location,
+        // it's too far, and the best match will be one cell south.
+        latitudeCenter -= resolution
+    } else if referenceLatitude - halfResolution > latitudeCenter
+              && latitudeCenter + resolution <= kLatitudeMax {
+        // If the proposed code is more than half a cell south of the reference location,
+        // it's too far, and the best match will be one cell north.
+        latitudeCenter += resolution
     }
-    // How many degrees longitude is the code from the reference?
-    degreesDifference = codeArea.longitudeCenter - referenceLongitude
-    if degreesDifference > areaToEdge {
+    // Adjust longitude if necessary.
+    if referenceLongitude + halfResolution < longitudeCenter {
       longitudeCenter -= resolution
-    } else if degreesDifference < -areaToEdge {
+    } else if referenceLongitude - halfResolution > longitudeCenter {
       longitudeCenter += resolution
     }
+
     return encode(latitude: latitudeCenter,
                   longitude: longitudeCenter,
                   codeLength: codeArea.codeLength)

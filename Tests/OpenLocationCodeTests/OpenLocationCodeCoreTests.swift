@@ -125,7 +125,7 @@ class ShortenTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    let keys = ["code","lat","lng","shortcode"]
+    let keys = ["code","lat","lng","shortcode", "testtype"]
     testData = OLCTestHelper.loadData(filename: "shortCodeTests", keys: keys)!
     XCTAssertNotNil(testData)
     XCTAssert(testData.count > 0)
@@ -134,11 +134,20 @@ class ShortenTests: XCTestCase {
   /// Tests OpenLocationCode.shorten
   func testFullToShort() {
     for(td) in testData {
-      let shortened = OpenLocationCode.shorten(code: td["code"]!,
-                                               latitude: Double(td["lat"]!)!,
-                                               longitude: Double(td["lng"]!)!,
-                                               maximumTruncation: 8)!
-      XCTAssertEqual(shortened, td["shortcode"]!)
+      if td["testtype"] == "B" || td["testtype"] == "S" {
+        let shortened = OpenLocationCode.shorten(code: td["code"]!,
+                                                 latitude: Double(td["lat"]!)!,
+                                                 longitude: Double(td["lng"]!)!,
+                                                 maximumTruncation: 8)!
+        XCTAssertEqual(shortened, td["shortcode"]!)
+      }
+      if td["testtype"] == "B" || td["testtype"] == "R" {
+        let recovered =
+          OpenLocationCode.recoverNearest(shortcode: td["shortcode"]!,
+              referenceLatitude: Double(td["lat"]!)!,
+              referenceLongitude: Double(td["lng"]!)!)
+        XCTAssertEqual(recovered, td["code"]!)
+      }
     }
   }
 
