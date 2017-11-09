@@ -249,7 +249,7 @@ import Foundation
   /// - Returns: A CodeArea object that provides the latitude and longitude of
   ///   two of the corners of the area, the center, and the length of the
   ///   original code.
-  public static func decode(_ code: String) -> OLCArea? {
+  @objc public static func decode(_ code: String) -> OLCArea? {
     guard let area = OpenLocationCode.decode(code) else {
       return nil
     }
@@ -283,7 +283,7 @@ import Foundation
   /// - Returns: The nearest full Open Location Code to the reference location
   ///   that matches the short code. If the passed code was not a valid short
   ///   code, but was a valid full code, it is returned unchanged.
-  public static func recoverNearest(shortcode: String,
+  @objc public static func recoverNearest(shortcode: String,
                                     referenceLatitude: Double,
                                     referenceLongitude: Double) -> String? {
     return OpenLocationCode.recoverNearest(shortcode:shortcode,
@@ -357,20 +357,20 @@ import Foundation
 /// code represents.
 @objc public class OLCArea: NSObject {
   /// The latitude of the SW corner in degrees.
-  public var latitudeLo: Double = 0
+  @objc public var latitudeLo: Double = 0
   /// The longitude of the SW corner in degrees.
-  public var longitudeLo: Double = 0
+  @objc public var longitudeLo: Double = 0
   /// The latitude of the NE corner in degrees.
-  public var latitudeHi: Double = 0
+  @objc public var latitudeHi: Double = 0
   /// The longitude of the NE corner in degrees.
-  public var longitudeHi: Double = 0
+  @objc public var longitudeHi: Double = 0
   /// The number of significant characters that were in the code.
   /// This excludes the separator.
-  public var codeLength: Int = 0
+  @objc public var codeLength: Int = 0
   /// The latitude of the center in degrees.
-  public var latitudeCenter: Double = 0
+  @objc public var latitudeCenter: Double = 0
   /// latitude_center: The latitude of the center in degrees.
-  public var longitudeCenter: Double = 0
+  @objc public var longitudeCenter: Double = 0
 
   /// - Parameter latitudeLo: The latitude of the SW corner in degrees.
   /// - Parameter longitudeLo: The longitude of the SW corner in degrees.
@@ -378,7 +378,7 @@ import Foundation
   /// - Parameter longitudeHi: The longitude of the NE corner in degrees.
   /// - Parameter codeLength: The number of significant characters that were in
   ///   the code.
-  init(latitudeLo: Double,
+  @objc init(latitudeLo: Double,
        longitudeLo: Double,
        latitudeHi: Double,
        longitudeHi: Double,
@@ -404,7 +404,7 @@ import Foundation
   }
 
   // Returns lat/lng coordinate array representing the area's center point.
-  func latlng() -> Array<Double>{
+  @objc func latlng() -> Array<Double>{
     return [self.latitudeCenter, self.longitudeCenter]
   }
 }

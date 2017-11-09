@@ -51,13 +51,14 @@ class OLCTestHelper {
     #endif
     // Falls back to loading directly from the file.
     if csvData == nil {
-      csvData =  try? String(contentsOfFile: "test_data/\(filename).csv", encoding: .utf8)
+      csvData =  try? String(contentsOfFile: "test_data/\(filename).csv", 
+                                   encoding: .utf8)
     }
     // Parses data.
     if let csvData = csvData {
       // Iterates each line.
       for(line) in csvData.components(separatedBy: CharacterSet.newlines) {
-        if line.hasPrefix("#") || line.characters.count == 0 {
+        if line.hasPrefix("#") || line.count == 0 {
           continue
         }
         // Parses as a comma separated array.
@@ -172,7 +173,7 @@ class EncodingTests: XCTestCase {
   func testEncoding() {
     for(td) in testData {
       let code = td["code"]!
-      var codelength = code.characters.count - 1
+      var codelength = code.count - 1
       if (code.find("0") >= 0)
       {
         codelength = code.find("0")

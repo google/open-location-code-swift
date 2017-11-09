@@ -47,7 +47,7 @@ let kCodeAlphabet = "23456789CFGHJMPQRVWX"
 let kCodeAlphabetCharset = CharacterSet.init(charactersIn: kCodeAlphabet)
 
 /// The base to use to convert numbers to/from.
-let kEncodingBase:UInt32 = UInt32(kCodeAlphabet.characters.count)
+let kEncodingBase:UInt32 = UInt32(kCodeAlphabet.count)
 
 /// The maximum value for latitude in degrees.
 let kLatitudeMax = 90.0
@@ -83,10 +83,10 @@ let kMinTrimmableCodeLen = 6
 let kLegalCharacters = CharacterSet.init(charactersIn: "23456789CFGHJMPQRVWX+0")
 
 /// Default size of encoded Open Location Codes.
-let kDefaultFullCodeLength = 11
+public let kDefaultFullCodeLength = 11
 
 /// Default truncation amount for short codes.
-let kDefaultShortCodeTruncation = 4
+public let kDefaultShortCodeTruncation = 4
 
 /// Minimum amount to truncate a short code if it will be truncated.
 /// Avoids creating short codes that are not really worth the shortening (i.e.
@@ -253,7 +253,7 @@ public class OpenLocationCode {
 
     // The separator is required.
     let sep = code.find(kSeparatorString)
-    if (code.characters.filter{$0 == kSeparator}.count) > 1 {
+    if ((code.filter{$0 == kSeparator} as String).count) > 1 {
       return false
     }
     // Is it the only character?
@@ -276,9 +276,9 @@ public class OpenLocationCode {
       // There can only be one group and it must have even length.
       let rpad = code.rfind(kPaddingCharacterString) + 1
       let pads = code.substring(from:pad, to: rpad)
-      let padCharCount = pads.characters.filter{$0 == kPaddingCharacter}.count
-      if pads.characters.count % 2 == 1
-          || padCharCount != pads.characters.count {
+      let padCharCount = (pads.filter{$0 == kPaddingCharacter} as String).count
+      if pads.count % 2 == 1
+          || padCharCount != pads.count {
        return false
       }
       // Padded codes must end with a separator, make sure it does.
@@ -290,7 +290,7 @@ public class OpenLocationCode {
     }
     // If there are characters after the separator, make sure there isn't just
     // one of them (not legal).
-    if code.characters.count - sep - 1 == 1 {
+    if code.count - sep - 1 == 1 {
       return false
     }
     // Check the code contains only valid characters.
@@ -351,7 +351,7 @@ public class OpenLocationCode {
       return false
     }
 
-    if code.characters.count > 1 {
+    if code.count > 1 {
       // Work out what the first longitude character indicates for longitude.
       let firstChar = code.uppercased()[1] // returns Character 'o'
       let firstLngValue =
@@ -438,10 +438,10 @@ public class OpenLocationCode {
         code += String(kSeparator)
       }
     }
-    while code.characters.count < kSeparatorPosition {
+    while code.count < kSeparatorPosition {
       code += "0"
     }
-    if code.characters.count == kSeparatorPosition {
+    if code.count == kSeparatorPosition {
       code += String(kSeparator)
     }
     return code
@@ -550,7 +550,7 @@ public class OpenLocationCode {
                                 longitudeLo: longitude[0] - kLongitudeMax,
                                 latitudeHi: latitude[1] - kLatitudeMax,
                                 longitudeHi: longitude[1] - kLongitudeMax,
-                                codeLength: code.characters.count)
+                                codeLength: code.count)
   }
 
   /// Decode either a latitude or longitude sequence.
@@ -570,7 +570,7 @@ public class OpenLocationCode {
                                            offset: Int) -> Array<Double>? {
     var i = 0
     var value = 0.0
-    while (i * 2 + offset < code.characters.count) {
+    while (i * 2 + offset < code.count) {
       let pos = kCodeAlphabet.find(String(code[i * 2 + offset]))
       let value3 = Double(pos) * kPairResolutions[i]
       value += value3
@@ -592,7 +592,7 @@ public class OpenLocationCode {
     var latPlaceValue = kGridSizeDegrees
     var lngPlaceValue = kGridSizeDegrees
     var i = 0
-    while i < code.characters.count {
+    while i < code.count {
       let codeIndex = kCodeAlphabet.find(String(code[i]))
       let row = codeIndex / kGridColumns
       let col = codeIndex % kGridColumns
@@ -606,7 +606,7 @@ public class OpenLocationCode {
                                 longitudeLo: longitudeLo,
                                 latitudeHi: latitudeLo + latPlaceValue,
                                 longitudeHi: longitudeLo + lngPlaceValue,
-                                codeLength: code.characters.count);
+                                codeLength: code.count);
   }
 
   /// Decodes an Open Location Code into the location coordinates.
@@ -626,13 +626,13 @@ public class OpenLocationCode {
     // valid so the maximum is one), padding characters and convert to upper
     // case.
     code = code.uppercased()
-    code = String(code.characters.filter {
+    code = String(code.filter {
         kCodeAlphabetCharset.contains(String($0).unicodeScalars.first!)
     })
 
     // Decode the lat/lng pair component.
     let codeArea = decodePairs(code[0..<kPairCodeLength])!
-    if code.characters.count <= kPairCodeLength {
+    if code.count <= kPairCodeLength {
       return codeArea
     }
     // If there is a grid refinement component, decode that.
@@ -702,7 +702,8 @@ public class OpenLocationCode {
     // Encodes the reference location, uses it to fill in the gaps of the
     // given short code, creating a full code, then decodes it.
     guard let encodedReferencePoint =
-        encode(latitude: referenceLatitude, longitude: referenceLongitude) else {
+        encode(latitude: referenceLatitude, longitude: referenceLongitude)
+        else {
       return nil
     }
     let expandedCode = encodedReferencePoint[0..<paddingLength] + shortcode
@@ -717,13 +718,13 @@ public class OpenLocationCode {
     // within -90 to 90 degrees.
     if referenceLatitude + halfResolution < latitudeCenter
        && latitudeCenter - resolution >= -kLatitudeMax {
-        // If the proposed code is more than half a cell north of the reference location,
-        // it's too far, and the best match will be one cell south.
+        // If the proposed code is more than half a cell north of the reference
+        // location, it's too far, and the best match will be one cell south.
         latitudeCenter -= resolution
     } else if referenceLatitude - halfResolution > latitudeCenter
               && latitudeCenter + resolution <= kLatitudeMax {
-        // If the proposed code is more than half a cell south of the reference location,
-        // it's too far, and the best match will be one cell north.
+        // If the proposed code is more than half a cell south of the reference
+        // location, it's too far, and the best match will be one cell north.
         latitudeCenter += resolution
     }
     // Adjust longitude if necessary.
@@ -805,7 +806,7 @@ public class OpenLocationCode {
 extension String {
 
   var length: Int {
-    return self.characters.count
+    return self.count
   }
 
   subscript (i: Int) -> Character {
@@ -827,7 +828,7 @@ extension String {
     let range = Range(uncheckedBounds: (lower: lower, upper: upper))
     let start = index(startIndex, offsetBy: range.lowerBound)
     let end = index(start, offsetBy: range.upperBound - range.lowerBound)
-    return self[Range(start ..< end)]
+    return String(self[Range(start ..< end)])
   }
 
   /// Returns index of the first instance of the string, or -1 if not found.
@@ -852,6 +853,6 @@ extension String {
     let start = self.index(self.startIndex, offsetBy: from)
     let end = self.index(self.startIndex, offsetBy: to)
     let range = start..<end
-    return self.substring(with: range)
+    return String(self[range])
   }
 }
