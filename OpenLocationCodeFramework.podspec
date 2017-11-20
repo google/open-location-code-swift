@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
   s.name         = "OpenLocationCodeFramework"
   s.module_name  = "OpenLocationCode"
-  s.version      = "2.0.0"
+  s.version      = "2.0.1"
   s.summary      = "Open Location Code conversion library for Swift and Objective-C"
 
   s.description  = <<-DESC
@@ -27,6 +27,8 @@ and watchOS.
   s.source       = { :git => "https://github.com/google/open-location-code-swift.git", :tag => s.version }
 
   s.pod_target_xcconfig = {
+    # Set the Swift version to match .swift-version
+    'SWIFT_VERSION' => '4.0',
     # Treat warnings as errors.
     'GCC_TREAT_WARNINGS_AS_ERRORS' => 'YES',
   }
