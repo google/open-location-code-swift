@@ -1,5 +1,5 @@
 # Build and test Open Location Code for Swift in Linux.
-FROM swift:3.1
+FROM swift:4.0
 RUN mkdir /OpenLocationCode
 WORKDIR /OpenLocationCode
 ADD . /OpenLocationCode

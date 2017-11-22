@@ -1,3 +1,5 @@
+// swift-tools-version:4.0
+
 //===-- OpenLocationCodeTests.swift - Tests for OpenLocationCode.swift ----===//
 //
 //  Copyright 2017 Google Inc.
@@ -20,13 +22,27 @@
 //
 //===----------------------------------------------------------------------===//
 
-// swift-tools-version:3.1
-
 import PackageDescription
 
-let package = Package(
+let packages = Package(
     name: "OpenLocationCode",
-    exclude: ["Framework",
-              "Tests/OpenLocationCodeObjCTests",
-              "Source/OpenLocationCodeObjCBridge.swift"]
+    products: [
+        .library(
+            name: "OpenLocationCode",
+            targets: ["OpenLocationCode"]),
+    ],
+    targets: [
+        .target(
+            name: "OpenLocationCode",
+            path: ".",
+            exclude: ["Source/OpenLocationCodeObjCBridge.swift", "Framework", "Tests", "test_data"],
+            sources: ["Source"]
+        ),
+        .testTarget(
+            name: "OpenLocationCodeTests",
+            dependencies: ["OpenLocationCode"],
+            path: "Tests",
+            exclude: ["OpenLocationCodeObjCTests"]
+        )
+    ]
 )

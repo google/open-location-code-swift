@@ -40,6 +40,14 @@ This library is provided as a Swift and Objective-C Cocoa Framework
 for iOS, macOS, tvOS and watchOS, and as a pure Swift module
 for macOS and Linux.
 
+## Swift Versions
+
+* Versions 1.x of Open Location Code for Swift are designed for Swift 3.2.
+* Versions 2.x of Open Location Code for Swift are designed for Swift 4.0.
+
+Choose the latest 1.x release for greater compatability, or the latest 2.x
+release if you're fully in the Swift 4 world!
+
 ## Building
 
 ### Cocoa Framework
