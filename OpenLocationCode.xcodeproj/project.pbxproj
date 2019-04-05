@@ -408,12 +408,12 @@
 					};
 					BE9C7A6F1F23C9F30067DAC8 = {
 						CreatedOnToolsVersion = 8.3.3;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					BE9C7A781F23C9F30067DAC8 = {
 						CreatedOnToolsVersion = 8.3.3;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -423,6 +423,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = BE9C7A661F23C9F30067DAC8;
@@ -893,6 +894,7 @@
 				PRODUCT_NAME = OpenLocationCode;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -912,6 +914,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.OpenLocationCode;
 				PRODUCT_NAME = OpenLocationCode;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -925,6 +928,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.OpenLocationCodeTests;
 				PRODUCT_NAME = OpenLocationCodeTests_iOS;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -937,6 +941,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.OpenLocationCodeTests;
 				PRODUCT_NAME = OpenLocationCodeTests_iOS;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

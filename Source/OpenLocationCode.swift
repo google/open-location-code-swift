@@ -815,11 +815,11 @@ extension String {
   }
 
   func substring(from: Int) -> String {
-    return self[Range(min(from, length) ..< length)]
+    return self[min(from, length) ..< length]
   }
 
   func substring(to: Int) -> String {
-    return self[Range(0 ..< max(0, to))]
+    return self[0 ..< max(0, to)]
   }
 
   subscript (r: Range<Int>) -> String {
