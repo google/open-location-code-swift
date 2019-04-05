@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.2
 
 //===-- OpenLocationCodeTests.swift - Tests for OpenLocationCode.swift ----===//
 //
@@ -26,10 +26,12 @@ import PackageDescription
 
 let packages = Package(
     name: "OpenLocationCode",
+
     products: [
         .library(
             name: "OpenLocationCode",
-            targets: ["OpenLocationCode"]),
+            targets: ["OpenLocationCode"]
+            ),
     ],
     targets: [
         .target(
@@ -41,7 +43,6 @@ let packages = Package(
         .testTarget(
             name: "OpenLocationCodeTests",
             dependencies: ["OpenLocationCode"],
-            path: "Tests",
             exclude: ["OpenLocationCodeObjCTests"]
         )
     ]
