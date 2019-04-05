@@ -828,7 +828,7 @@ extension String {
     let range = Range(uncheckedBounds: (lower: lower, upper: upper))
     let start = index(startIndex, offsetBy: range.lowerBound)
     let end = index(start, offsetBy: range.upperBound - range.lowerBound)
-    return String(self[Range(start ..< end)])
+    return String(self[start ..< end])
   }
 
   /// Returns index of the first instance of the string, or -1 if not found.
