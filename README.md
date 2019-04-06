@@ -43,11 +43,10 @@ for macOS and Linux.
 
 ## Swift Versions
 
-* Versions 1.x of Open Location Code for Swift are designed for Swift 3.2.
+* Versions 3.x of Open Location Code for Swift are designed for Swift 5.0.
 * Versions 2.x of Open Location Code for Swift are designed for Swift 4.0.
-
-Choose the latest 1.x release for greater compatability, or the latest 2.x
-release if you're fully in the Swift 4 world!
+* Versions 1.x of Open Location Code for Swift were designed for Swift 3.2,
+  but are no longer maintained.
 
 ## Building
 
