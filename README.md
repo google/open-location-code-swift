@@ -160,3 +160,20 @@ NSString *recoveredCode = [OLCConverter recoverNearestWithShortcode:@"CWC8+Q48"
                                                  referenceLongitude:-122.1];
 NSLog(@"Recovered Full Code: %@", recoveredCode);
 ```
+
+## Testing the CI Locally
+
+To run the Travis CI tests locally, install:
+
+```
+gem install wwtd
+gem install xcpretty
+```
+
+And run:
+```
+wwtd
+```
+
+Your version of Xcode and macOS will need to match the Travis `osx_image`
+[configuration](https://docs.travis-ci.com/user/reference/osx/#macos-version).
