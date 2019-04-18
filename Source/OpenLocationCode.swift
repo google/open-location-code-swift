@@ -162,7 +162,7 @@ public struct OpenLocationCodeArea {
 /// a 2.8x3.5 meter area.
 ///
 /// Two encoding algorithms are used. The first 10 characters are pairs of
-/// characters, one for latitude and one for latitude, using base 20. Each pair
+/// characters, one for latitude and one for longitude, using base 20. Each pair
 /// reduces the area of the code by a factor of 400. Only even code lengths are
 /// sensible, since an odd-numbered length would have sides in a ratio of 20:1.
 ///
@@ -376,7 +376,7 @@ public class OpenLocationCode {
   /// 10 have the same precision for latitude and longitude, but lengths > 10
   /// have different precisions due to the grid method having fewer columns than
   /// rows.
-  internal static func computeLatitutePrecision(_ codeLength: Int) -> Double {
+  internal static func computeLatitudePrecision(_ codeLength: Int) -> Double {
     if codeLength <= 10 {
       return pow(Double(20), Double(codeLength / -2 + 2))
     }
@@ -522,7 +522,7 @@ public class OpenLocationCode {
     // Latitude 90 needs to be adjusted to be just less, so the returned code
     // can also be decoded.
     if latitude == 90 {
-      latitude = latitude - Double(computeLatitutePrecision(codeLength))
+      latitude = latitude - Double(computeLatitudePrecision(codeLength))
     }
     var code = encodePairs(latitude: latitude,
                            longitude: longitude,
