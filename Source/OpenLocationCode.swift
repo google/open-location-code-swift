@@ -675,7 +675,8 @@ public class OpenLocationCode {
   ///   to use to find the nearest matching full code.
   /// - Returns: The nearest full Open Location Code to the reference location
   ///   that matches the short code. If the passed code was not a valid short
-  ///   code, but was a valid full code, it is returned unchanged.
+  ///   code, but was a valid full code, it is returned with proper capitalization
+  ///   but otherwise unchanged.
   public static func recoverNearest(shortcode: String,
                                     referenceLatitude: Double,
                                     referenceLongitude: Double) -> String? {
@@ -685,7 +686,7 @@ public class OpenLocationCode {
 
     // Passed short code is actually a full code.
     if isFull(code: shortcode) {
-      return shortcode
+      return shortcode.uppercased()
     }
     // Passed short code is not valid.
     if !isShort(code: shortcode) {
