@@ -464,10 +464,13 @@ public class OpenLocationCode {
     var lngPlaceValue = kGridSizeDegrees
     // Adjust latitude and longitude so they fall into positive ranges and
     // get the offset for the required places.
-    var adjustedLatitude =
-        (latitude + kLatitudeMax).truncatingRemainder(dividingBy: latPlaceValue)
-    var adjustedLongitude = (longitude + kLongitudeMax).truncatingRemainder(
-        dividingBy: lngPlaceValue)
+    var adjustedLatitude = latitude + kLatitudeMax
+    var adjustedLongitude = longitude + kLongitudeMax
+    // To avoid problems with floating point, get rid of the degrees.
+    adjustedLatitude = adjustedLatitude.truncatingRemainder(dividingBy: 1)
+    adjustedLongitude = adjustedLongitude.truncatingRemainder(dividingBy: 1)
+    adjustedLatitude = adjustedLatitude.truncatingRemainder(dividingBy: latPlaceValue)
+    adjustedLongitude = adjustedLongitude.truncatingRemainder(dividingBy: lngPlaceValue)
 
     for _ in (0..<codeLength) {
       // Work out the row and column.
