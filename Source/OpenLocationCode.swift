@@ -376,12 +376,12 @@ public class OpenLocationCode {
   /// 10 have the same precision for latitude and longitude, but lengths > 10
   /// have different precisions due to the grid method having fewer columns than
   /// rows.
-  internal static func computeLatitutePrecision(_ codeLength: Int) -> Int {
+  internal static func computeLatitutePrecision(_ codeLength: Int) -> Double {
     if codeLength <= 10 {
-      return Int(pow(Double(20), Double(codeLength / -2 + 2)))
+      return pow(Double(20), Double(codeLength / -2 + 2))
     }
-    return Int(pow(20.0, -3.0)
-               / pow(Double(kGridRows), Double(codeLength - 10)))
+    return pow(20.0, -3.0)
+           / pow(Double(kGridRows), Double(codeLength - 10))
   }
 
   /// Normalize a longitude into the range -180 to 180, not including 180.
