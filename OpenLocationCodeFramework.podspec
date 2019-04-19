@@ -27,12 +27,11 @@ and watchOS.
   s.source       = { :git => "https://github.com/google/open-location-code-swift.git", :tag => s.version }
 
   s.pod_target_xcconfig = {
-    # Set the Swift version to match .swift-version
-    'SWIFT_VERSION' => '4.0',
     # Treat warnings as errors.
     'GCC_TREAT_WARNINGS_AS_ERRORS' => 'YES',
   }
 
+  s.swift_version = '5.0'
   s.source_files = "Source/*.swift"
   s.requires_arc = true
 end
