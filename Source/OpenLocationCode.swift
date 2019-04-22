@@ -82,8 +82,11 @@ let kMinTrimmableCodeLen = 6
 /// complete valid charset for Open Location Codes.
 let kLegalCharacters = CharacterSet.init(charactersIn: "23456789CFGHJMPQRVWX+0")
 
-/// Default size of encoded Open Location Codes.
+/// Default length of encoded Open Location Codes (not including + symbol).
 public let kDefaultFullCodeLength = 11
+
+/// The maximum significant digits in a plus code.
+let kMaxCodeLength = 15
 
 /// Default truncation amount for short codes.
 public let kDefaultShortCodeTruncation = 4
@@ -92,7 +95,6 @@ public let kDefaultShortCodeTruncation = 4
 /// Avoids creating short codes that are not really worth the shortening (i.e.
 /// chars saved doesn't make up for need to resolve).
 let kMinShortCodeTruncation = 4
-
 
 /// Coordinates of a decoded Open Location Code.
 /// The coordinates include the latitude and longitude of the lower left and
@@ -499,11 +501,11 @@ public class OpenLocationCode {
   ///   normalised to the range -180 to 180.
   /// - Parameter codeLength: The number of significant digits in the output
   ///   code, not including any separator characters. Possible values are;
-  ///   `2`, `4`, `6`, `8`, `10`, `11`, `12`, `13` and above. Lower values
+  ///   `2`, `4`, `6`, `8`, `10`, `11`, `12`, `13`, `14`, and `15`. Values
+  ///   above `15` are accepted, but treated as `15`. Lower values
   ///   indicate a larger area, higher values a more precise area.
   ///   You can also shorten a code after encoding for codes used with a
   ///   reference point (e.g. your current location, a city, etc).
-  ///
   /// - Returns: Open Location Code for the given coordinate.
   public static func encode(latitude: Double,
                             longitude: Double,
@@ -514,6 +516,8 @@ public class OpenLocationCode {
       // 'Invalid Open Location Code length - '
       return nil
     }
+    var codeLength = codeLength
+    codeLength = min(codeLength, kMaxCodeLength)
 
     // Ensure that latitude and longitude are valid.
     var latitude = clipLatitude(latitude)
@@ -632,6 +636,10 @@ public class OpenLocationCode {
     code = String(code.filter {
         kCodeAlphabetCharset.contains(String($0).unicodeScalars.first!)
     })
+    // Constrain to max digits (NB. plus symbol already removed).
+    if (code.length > kMaxCodeLength) {
+      code = code.substring(to:kMaxCodeLength)
+    }
 
     // Decode the lat/lng pair component.
     let codeArea = decodePairs(code[0..<kPairCodeLength])!
