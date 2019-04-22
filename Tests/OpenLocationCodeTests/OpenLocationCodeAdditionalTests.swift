@@ -72,7 +72,46 @@ class OpenLocationCodeAdditionalTests: XCTestCase {
     XCTAssertEqual(citycode, "9QCJ+2VX")
   }
 
+  /// Tests the encoding behavior of codes exceeding the maximum
+  /// number of digits. Codes are limited to 15 significant digits.
+  func testMaxLength_Encoding() {
+    for length in [15, 16, 17, 100000] {
+      let code = OpenLocationCode.encode(latitude: 37.539669125,
+                                         longitude: -122.375069125,
+                                         codeLength: length)!
+      XCTAssertEqual(code, "849VGJQF+VX7QR4M")
+    }
+  }
+
+  /// Tests the decoding behavior of codes exceeding the maximum
+  /// number of digits. Significant digits after 15 are ignored.
+  func testMaxLength_Decoding() {
+    // Codes of 15 digits (not including plus) and higher should be equal
+    let maxCharCode = "849VGJQF+VX7QR4M"
+    let coord1 = OpenLocationCode.decode(maxCharCode)!
+    let coord2 = OpenLocationCode.decode(maxCharCode + "7QR4M")!
+    XCTAssertEqual(coord1.latitudeCenter, coord2.latitudeCenter)
+    XCTAssertEqual(coord1.longitudeCenter, coord2.longitudeCenter)
+  }
+
+  /// Tests the validity checking behavior of codes exceeding the maximum
+  /// number of digits. Codes exceeding the maximum length but with only
+  /// valid characters are still valid, those with invalid characters after
+  /// the maximum length are invalid.
+  func testMaxLength_Validity() {
+    let maxCharCode = "849VGJQF+VX7QR4M" // a 15 digit code
+    // Codes with valid characters after the max are still valid
+    let maxCharCodeExceededValid = maxCharCode + "W"
+    XCTAssertTrue(OpenLocationCode.isValid(code: maxCharCodeExceededValid));
+    // Codes with invalid characters after the max are invalid
+    let maxCharCodeExceededInvalid = maxCharCode + "U"
+    XCTAssertFalse(OpenLocationCode.isValid(code: maxCharCodeExceededInvalid));
+  }
+
   static var allTests = [
     ("testEncodeLengthValidity", testEncodeLengthValidity),
+    ("testMaxLength_Encoding", testMaxLength_Encoding),
+    ("testMaxLength_Decoding", testMaxLength_Decoding),
+    ("testMaxLength_Validity", testMaxLength_Validity),
   ]
 }
