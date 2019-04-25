@@ -27,6 +27,7 @@ XCTMain([
     testCase(ValidityTests.allTests),
     testCase(OpenLocationCodeSwiftExampleTests.allTests),
     testCase(EncodingTests.allTests),
+    testCase(DecodingTests.allTests),
     testCase(ShortenTests.allTests),
     testCase(OpenLocationCodeAdditionalTests.allTests),
 ])

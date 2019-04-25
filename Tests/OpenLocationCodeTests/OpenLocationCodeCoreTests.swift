@@ -55,25 +55,27 @@ class OLCTestHelper {
                                    encoding: .utf8)
     }
     // Parses data.
-    if let csvData = csvData {
-      // Iterates each line.
-      for(line) in csvData.components(separatedBy: CharacterSet.newlines) {
-        if line.hasPrefix("#") || line.count == 0 {
-          continue
-        }
-        // Parses as a comma separated array.
-        let lineData =
-            line.components(separatedBy: CharacterSet.init(charactersIn: ","))
-        // Converts to dict.
-        var lineDict:Dictionary<String, String> = [:]
-        for i in 0 ..< keys.count {
-          lineDict[keys[i]] = lineData[i]
-        }
-        testData += [lineDict]
-      }
-      return testData
+    guard let csv = csvData else {
+      print("Unable to read \(filename).csv")
+      XCTAssert(false)
+      return nil
     }
-    return nil
+    // Iterates each line.
+    for(line) in csv.components(separatedBy: CharacterSet.newlines) {
+      if line.hasPrefix("#") || line.count == 0 {
+        continue
+      }
+      // Parses as a comma separated array.
+      let lineData =
+          line.components(separatedBy: CharacterSet.init(charactersIn: ","))
+      // Converts to dict.
+      var lineDict:Dictionary<String, String> = [:]
+      for i in 0 ..< keys.count {
+        lineDict[keys[i]] = lineData[i]
+      }
+      testData += [lineDict]
+    }
+    return testData
   }
 }
 
@@ -157,14 +159,14 @@ class ShortenTests: XCTestCase {
   ]
 }
 
-/// Tests encoding and decoding.
+/// Tests encoding.
 class EncodingTests: XCTestCase {
   var testData:Array<Dictionary<String, String>> = []
 
   override func setUp() {
     super.setUp()
-    let keys = ["code","lat","lng","latLo","lngLo","latHi","lngHi"]
-    testData = OLCTestHelper.loadData(filename: "encodingTests", keys: keys)!
+    let keys = ["lat","lng","length","code"]
+    testData = OLCTestHelper.loadData(filename: "encoding", keys: keys)!
     XCTAssertNotNil(testData)
     XCTAssert(testData.count > 0)
   }
@@ -172,17 +174,29 @@ class EncodingTests: XCTestCase {
   /// Tests OpenLocationCode.encode
   func testEncoding() {
     for(td) in testData {
-      let code = td["code"]!
-      var codelength = code.count - 1
-      if (code.find("0") >= 0)
-      {
-        codelength = code.find("0")
-      }
       let encoded = OpenLocationCode.encode(latitude: Double(td["lat"]!)!,
                                             longitude: Double(td["lng"]!)!,
-                                            codeLength: codelength)
+                                            codeLength: Int(td["length"]!)!)
+      let code = td["code"]!
       XCTAssertEqual(encoded, code)
     }
+  }
+
+  static var allTests = [
+    ("testEncoding", testEncoding),
+  ]
+}
+
+/// Tests decoding.
+class DecodingTests: XCTestCase {
+  var testData:Array<Dictionary<String, String>> = []
+
+  override func setUp() {
+    super.setUp()
+    let keys = ["code","length","latLo","lngLo","latHi","lngHi"]
+    testData = OLCTestHelper.loadData(filename: "decoding", keys: keys)!
+    XCTAssertNotNil(testData)
+    XCTAssert(testData.count > 0)
   }
 
   /// Tests OpenLocationCode.decode
@@ -208,7 +222,6 @@ class EncodingTests: XCTestCase {
   }
 
   static var allTests = [
-    ("testEncoding", testEncoding),
     ("testDecoding", testDecoding),
   ]
 }
