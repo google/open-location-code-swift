@@ -20,17 +20,14 @@
 		BE05A9E01F29687C00DEB62E /* OpenLocationCodeAdditionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB0EF4C1F26401E0079AF6E /* OpenLocationCodeAdditionalTests.swift */; };
 		BE05A9E11F29687C00DEB62E /* OpenLocationCodeObjCExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE5DAC41F25820B003BB31E /* OpenLocationCodeObjCExampleTests.m */; };
 		BE05A9E21F29687C00DEB62E /* OpenLocationCodeSwiftExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB0EF4A1F263D3C0079AF6E /* OpenLocationCodeSwiftExampleTests.swift */; };
-		BE05A9E61F296ACA00DEB62E /* encodingTests.csv in Resources */ = {isa = PBXBuildFile; fileRef = BE710F721F24F13200E5B525 /* encodingTests.csv */; };
 		BE05A9E71F296ACA00DEB62E /* shortCodeTests.csv in Resources */ = {isa = PBXBuildFile; fileRef = BE710F731F24F13200E5B525 /* shortCodeTests.csv */; };
 		BE05A9E81F296ACA00DEB62E /* validityTests.csv in Resources */ = {isa = PBXBuildFile; fileRef = BE710F741F24F13200E5B525 /* validityTests.csv */; };
-		BE05A9E91F296ACB00DEB62E /* encodingTests.csv in Resources */ = {isa = PBXBuildFile; fileRef = BE710F721F24F13200E5B525 /* encodingTests.csv */; };
 		BE05A9EA1F296ACB00DEB62E /* shortCodeTests.csv in Resources */ = {isa = PBXBuildFile; fileRef = BE710F731F24F13200E5B525 /* shortCodeTests.csv */; };
 		BE05A9EB1F296ACB00DEB62E /* validityTests.csv in Resources */ = {isa = PBXBuildFile; fileRef = BE710F741F24F13200E5B525 /* validityTests.csv */; };
 		BE300EC41F2D0820003AAEFE /* OpenLocationCodeObjCBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE300EC31F2D0820003AAEFE /* OpenLocationCodeObjCBridge.swift */; };
 		BE300EC51F2D091D003AAEFE /* OpenLocationCodeObjCBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE300EC31F2D0820003AAEFE /* OpenLocationCodeObjCBridge.swift */; };
 		BE300EC61F2D091E003AAEFE /* OpenLocationCodeObjCBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE300EC31F2D0820003AAEFE /* OpenLocationCodeObjCBridge.swift */; };
 		BE300EC71F2D091E003AAEFE /* OpenLocationCodeObjCBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE300EC31F2D0820003AAEFE /* OpenLocationCodeObjCBridge.swift */; };
-		BE710F751F24F13B00E5B525 /* encodingTests.csv in Resources */ = {isa = PBXBuildFile; fileRef = BE710F721F24F13200E5B525 /* encodingTests.csv */; };
 		BE710F761F24F13E00E5B525 /* shortCodeTests.csv in Resources */ = {isa = PBXBuildFile; fileRef = BE710F731F24F13200E5B525 /* shortCodeTests.csv */; };
 		BE710F771F24F14100E5B525 /* validityTests.csv in Resources */ = {isa = PBXBuildFile; fileRef = BE710F741F24F13200E5B525 /* validityTests.csv */; };
 		BE9C7A7A1F23C9F30067DAC8 /* OpenLocationCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9C7A701F23C9F30067DAC8 /* OpenLocationCode.framework */; };
@@ -40,6 +37,12 @@
 		BEAC9B3A1F2C24C7009ABB32 /* OpenLocationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAC9B381F2C24C7009ABB32 /* OpenLocationCode.swift */; };
 		BEAC9B3B1F2C24C7009ABB32 /* OpenLocationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAC9B381F2C24C7009ABB32 /* OpenLocationCode.swift */; };
 		BEAC9B3C1F2C24C7009ABB32 /* OpenLocationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAC9B381F2C24C7009ABB32 /* OpenLocationCode.swift */; };
+		BEAF3E1C2273837300FA6A39 /* encoding.csv in Resources */ = {isa = PBXBuildFile; fileRef = BEAF3E1A2273837200FA6A39 /* encoding.csv */; };
+		BEAF3E1D2273837300FA6A39 /* encoding.csv in Resources */ = {isa = PBXBuildFile; fileRef = BEAF3E1A2273837200FA6A39 /* encoding.csv */; };
+		BEAF3E1E2273837300FA6A39 /* encoding.csv in Resources */ = {isa = PBXBuildFile; fileRef = BEAF3E1A2273837200FA6A39 /* encoding.csv */; };
+		BEAF3E1F2273837300FA6A39 /* decoding.csv in Resources */ = {isa = PBXBuildFile; fileRef = BEAF3E1B2273837300FA6A39 /* decoding.csv */; };
+		BEAF3E202273837300FA6A39 /* decoding.csv in Resources */ = {isa = PBXBuildFile; fileRef = BEAF3E1B2273837300FA6A39 /* decoding.csv */; };
+		BEAF3E212273837300FA6A39 /* decoding.csv in Resources */ = {isa = PBXBuildFile; fileRef = BEAF3E1B2273837300FA6A39 /* decoding.csv */; };
 		BEB0EF4B1F263D3C0079AF6E /* OpenLocationCodeSwiftExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB0EF4A1F263D3C0079AF6E /* OpenLocationCodeSwiftExampleTests.swift */; };
 		BEB0EF4D1F26401E0079AF6E /* OpenLocationCodeAdditionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB0EF4C1F26401E0079AF6E /* OpenLocationCodeAdditionalTests.swift */; };
 		BEE5DAC51F25820B003BB31E /* OpenLocationCodeObjCExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE5DAC41F25820B003BB31E /* OpenLocationCodeObjCExampleTests.m */; };
@@ -76,7 +79,6 @@
 		BE05A96E1F2964CC00DEB62E /* OpenLocationCode.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OpenLocationCode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE05A9761F2964CC00DEB62E /* OpenLocationCode_macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenLocationCode_macOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE300EC31F2D0820003AAEFE /* OpenLocationCodeObjCBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenLocationCodeObjCBridge.swift; sourceTree = "<group>"; };
-		BE710F721F24F13200E5B525 /* encodingTests.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = encodingTests.csv; sourceTree = "<group>"; };
 		BE710F731F24F13200E5B525 /* shortCodeTests.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = shortCodeTests.csv; sourceTree = "<group>"; };
 		BE710F741F24F13200E5B525 /* validityTests.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = validityTests.csv; sourceTree = "<group>"; };
 		BE9C7A701F23C9F30067DAC8 /* OpenLocationCode.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OpenLocationCode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +88,8 @@
 		BE9C7A7E1F23C9F30067DAC8 /* OpenLocationCodeCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OpenLocationCodeCoreTests.swift; path = OpenLocationCodeTests/OpenLocationCodeCoreTests.swift; sourceTree = "<group>"; };
 		BE9C7A801F23C9F30067DAC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BEAC9B381F2C24C7009ABB32 /* OpenLocationCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenLocationCode.swift; sourceTree = "<group>"; };
+		BEAF3E1A2273837200FA6A39 /* encoding.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = encoding.csv; sourceTree = "<group>"; };
+		BEAF3E1B2273837300FA6A39 /* decoding.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = decoding.csv; sourceTree = "<group>"; };
 		BEB0EF4A1F263D3C0079AF6E /* OpenLocationCodeSwiftExampleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenLocationCodeSwiftExampleTests.swift; path = OpenLocationCodeTests/OpenLocationCodeSwiftExampleTests.swift; sourceTree = "<group>"; };
 		BEB0EF4C1F26401E0079AF6E /* OpenLocationCodeAdditionalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenLocationCodeAdditionalTests.swift; path = OpenLocationCodeTests/OpenLocationCodeAdditionalTests.swift; sourceTree = "<group>"; };
 		BEE5DAC41F25820B003BB31E /* OpenLocationCodeObjCExampleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpenLocationCodeObjCExampleTests.m; path = OpenLocationCodeObjCTests/OpenLocationCodeObjCExampleTests.m; sourceTree = "<group>"; };
@@ -150,7 +154,8 @@
 		BE710F711F24F13200E5B525 /* test_data */ = {
 			isa = PBXGroup;
 			children = (
-				BE710F721F24F13200E5B525 /* encodingTests.csv */,
+				BEAF3E1B2273837300FA6A39 /* decoding.csv */,
+				BEAF3E1A2273837200FA6A39 /* encoding.csv */,
 				BE710F731F24F13200E5B525 /* shortCodeTests.csv */,
 				BE710F741F24F13200E5B525 /* validityTests.csv */,
 			);
@@ -462,8 +467,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE05A9E71F296ACA00DEB62E /* shortCodeTests.csv in Resources */,
+				BEAF3E202273837300FA6A39 /* decoding.csv in Resources */,
+				BEAF3E1D2273837300FA6A39 /* encoding.csv in Resources */,
 				BE05A9E81F296ACA00DEB62E /* validityTests.csv in Resources */,
-				BE05A9E61F296ACA00DEB62E /* encodingTests.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,8 +485,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE05A9EA1F296ACB00DEB62E /* shortCodeTests.csv in Resources */,
+				BEAF3E212273837300FA6A39 /* decoding.csv in Resources */,
+				BEAF3E1E2273837300FA6A39 /* encoding.csv in Resources */,
 				BE05A9EB1F296ACB00DEB62E /* validityTests.csv in Resources */,
-				BE05A9E91F296ACB00DEB62E /* encodingTests.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,8 +503,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE710F761F24F13E00E5B525 /* shortCodeTests.csv in Resources */,
+				BEAF3E1F2273837300FA6A39 /* decoding.csv in Resources */,
+				BEAF3E1C2273837300FA6A39 /* encoding.csv in Resources */,
 				BE710F771F24F14100E5B525 /* validityTests.csv in Resources */,
-				BE710F751F24F13B00E5B525 /* encodingTests.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
