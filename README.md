@@ -177,3 +177,11 @@ wwtd
 
 Your version of Xcode and macOS will need to match the Travis `osx_image`
 [configuration](https://docs.travis-ci.com/user/reference/osx/#macos-version).
+
+## License
+
+Please see [LICENSE](LICENSE) for details. 
+
+## Contributing
+
+Want to contribute? Great! First, [read our guidelines for contributors](CONTRIBUTING.md).
