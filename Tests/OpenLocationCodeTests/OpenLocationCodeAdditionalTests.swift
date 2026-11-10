@@ -108,10 +108,91 @@ class OpenLocationCodeAdditionalTests: XCTestCase {
     XCTAssertFalse(OpenLocationCode.isValid(code: maxCharCodeExceededInvalid));
   }
 
+  /// Tests longitude normalization across standard, boundary, huge finite, and
+  /// non-finite values.
+  func testNormalizeLongitude() {
+    XCTAssertEqual(OpenLocationCode.normalizeLongitude(0), 0)
+    XCTAssertEqual(OpenLocationCode.normalizeLongitude(-180), -180)
+    XCTAssertEqual(OpenLocationCode.normalizeLongitude(180), -180)
+    XCTAssertEqual(OpenLocationCode.normalizeLongitude(200), -160)
+    XCTAssertEqual(OpenLocationCode.normalizeLongitude(-200), 160)
+    XCTAssertEqual(OpenLocationCode.normalizeLongitude(540), -180)
+    XCTAssertEqual(OpenLocationCode.normalizeLongitude(-540), -180)
+
+    let hugeValues: [Double] = [
+      1e20, -1e20, 1e308, -1e308,
+      Double.greatestFiniteMagnitude, -Double.greatestFiniteMagnitude,
+    ]
+    for value in hugeValues {
+      let normalized = OpenLocationCode.normalizeLongitude(value)
+      XCTAssertTrue(normalized.isFinite, "\(value)")
+      XCTAssertGreaterThanOrEqual(normalized, -180, "\(value)")
+      XCTAssertLessThan(normalized, 180, "\(value)")
+    }
+
+    XCTAssertEqual(OpenLocationCode.normalizeLongitude(.infinity), .infinity)
+    XCTAssertEqual(OpenLocationCode.normalizeLongitude(-.infinity), -.infinity)
+    XCTAssertTrue(OpenLocationCode.normalizeLongitude(.nan).isNaN)
+  }
+
+  /// Tests that huge finite coordinates terminate and non-finite coordinates
+  /// are rejected across public APIs.
+  func testNonFiniteAndHugeCoordinates() {
+    XCTAssertEqual(OpenLocationCode.encode(latitude: 0, longitude: 200),
+                   OpenLocationCode.encode(latitude: 0, longitude: -160))
+    XCTAssertEqual(OpenLocationCode.encode(latitude: 0, longitude: 540),
+                   OpenLocationCode.encode(latitude: 0, longitude: -180))
+    XCTAssertNotNil(OpenLocationCode.encode(latitude: 0, longitude: 1e308))
+    XCTAssertNotNil(OpenLocationCode.encode(latitude: 0, longitude: -1e308))
+    XCTAssertNotNil(
+        OpenLocationCode.recoverNearest(shortcode: "CWC8+Q48",
+                                        referenceLatitude: 37.4,
+                                        referenceLongitude: 1e308))
+    XCTAssertNotNil(
+        OpenLocationCode.shorten(code: "849VCWC8+Q48",
+                                 latitude: 37.4,
+                                 longitude: 1e308))
+
+    let nonFiniteValues: [Double] = [.infinity, -.infinity, .nan]
+    for value in nonFiniteValues {
+      XCTAssertNil(OpenLocationCode.encode(latitude: 0, longitude: value))
+      XCTAssertNil(OpenLocationCode.encode(latitude: value, longitude: 0))
+      XCTAssertNil(OpenLocationCode.encode(latitude: value, longitude: value))
+      XCTAssertNil(
+          OpenLocationCode.recoverNearest(shortcode: "CWC8+Q48",
+                                          referenceLatitude: 37.4,
+                                          referenceLongitude: value))
+      XCTAssertNil(
+          OpenLocationCode.recoverNearest(shortcode: "CWC8+Q48",
+                                          referenceLatitude: value,
+                                          referenceLongitude: -122.0))
+      XCTAssertNil(
+          OpenLocationCode.shorten(code: "849VCWC8+Q48",
+                                   latitude: 37.4,
+                                   longitude: value))
+      XCTAssertNil(
+          OpenLocationCode.shorten(code: "849VCWC8+Q48",
+                                   latitude: value,
+                                   longitude: -122.0))
+      XCTAssertEqual(
+          OpenLocationCode.encodeGrid(latitude: 0,
+                                      longitude: value,
+                                      codeLength: 1),
+          "")
+      XCTAssertEqual(
+          OpenLocationCode.encodeGrid(latitude: value,
+                                      longitude: 0,
+                                      codeLength: 1),
+          "")
+    }
+  }
+
   static var allTests = [
     ("testEncodeLengthValidity", testEncodeLengthValidity),
     ("testMaxLength_Encoding", testMaxLength_Encoding),
     ("testMaxLength_Decoding", testMaxLength_Decoding),
     ("testMaxLength_Validity", testMaxLength_Validity),
+    ("testNormalizeLongitude", testNormalizeLongitude),
+    ("testNonFiniteAndHugeCoordinates", testNonFiniteAndHugeCoordinates),
   ]
 }

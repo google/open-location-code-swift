@@ -390,11 +390,11 @@ public class OpenLocationCode {
   ///
   /// - Parameter longitude: A longitude in signed decimal degrees.
   internal static func normalizeLongitude(_ longitude: Double) -> Double {
-    var longitude = longitude
-    while longitude < -180 {
+    guard longitude.isFinite else { return longitude }
+    var longitude = longitude.truncatingRemainder(dividingBy: 360)
+    if longitude < -180 {
       longitude += 360
-    }
-    while longitude >= 180 {
+    } else if longitude >= 180 {
       longitude -= 360
     }
     return longitude
@@ -461,6 +461,9 @@ public class OpenLocationCode {
   public static func encodeGrid(latitude: Double,
                                 longitude: Double,
                                 codeLength: Int) -> String {
+    guard latitude.isFinite && longitude.isFinite && codeLength > 0 else {
+      return ""
+    }
     var code: String = ""
     var latPlaceValue = kGridSizeDegrees
     var lngPlaceValue = kGridSizeDegrees
@@ -514,6 +517,9 @@ public class OpenLocationCode {
     if codeLength < 2
       || (codeLength < kPairCodeLength && codeLength % 2 == 1) {
       // 'Invalid Open Location Code length - '
+      return nil
+    }
+    guard latitude.isFinite && longitude.isFinite else {
       return nil
     }
     var codeLength = codeLength
@@ -700,6 +706,9 @@ public class OpenLocationCode {
     if !isShort(code: shortcode) {
       return nil
     }
+    guard referenceLatitude.isFinite && referenceLongitude.isFinite else {
+      return nil
+    }
     // Ensure that latitude and longitude are valid.
     referenceLatitude = clipLatitude(referenceLatitude)
     referenceLongitude = normalizeLongitude(referenceLongitude)
@@ -788,6 +797,9 @@ public class OpenLocationCode {
     let codeArea = decode(code)
     if codeArea!.codeLength < kMinTrimmableCodeLen {
       // Code length must be at least kMinTrimmableCodeLen
+      return nil
+    }
+    guard latitude.isFinite && longitude.isFinite else {
       return nil
     }
     // Ensure that latitude and longitude are valid.
