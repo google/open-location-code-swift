@@ -270,14 +270,18 @@ public class OpenLocationCode {
     // but then it must be the final character.
     let pad = code.find(kPaddingCharacterString)
     if pad != -1 {
+      // Short codes cannot have padding.
+      if sep < kSeparatorPosition {
+        return false
+      }
       // Not allowed to start with them!
       if pad == 0 {
         return false
       }
 
-      // There can only be one group and it must have even length.
-      let rpad = code.rfind(kPaddingCharacterString) + 1
-      let pads = code.substring(from:pad, to: rpad)
+      // There can only be one group and it must have even length, extending
+      // right up to the separator.
+      let pads = code.substring(from: pad, to: sep)
       let padCharCount = (pads.filter{$0 == kPaddingCharacter} as String).count
       if pads.count % 2 == 1
           || padCharCount != pads.count {
