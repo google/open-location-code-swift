@@ -186,4 +186,21 @@ class OpenLocationCodeAdditionalTests: XCTestCase {
           "")
     }
   }
+
+  /// Tests `Equatable` and `Hashable` conformances on `OpenLocationCodeArea`.
+  func testAreaEquatableAndHashable() {
+    let areaUpper = OpenLocationCode.decode("849VCWC8+Q48")!
+    let areaLower = OpenLocationCode.decode("849vcwc8+q48")!
+    let area10Digit = OpenLocationCode.decode("849VCWC8+Q4")!
+    let areaNeighbor = OpenLocationCode.decode("849VCWC8+Q49")!
+
+    XCTAssertEqual(areaUpper, areaLower)
+    XCTAssertNotEqual(areaUpper, area10Digit)
+    XCTAssertNotEqual(areaUpper, areaNeighbor)
+
+    let set: Set<OpenLocationCodeArea> = [areaUpper, areaLower, areaNeighbor]
+    XCTAssertEqual(set.count, 2)
+    XCTAssertTrue(set.contains(areaUpper))
+    XCTAssertFalse(set.contains(area10Digit))
+  }
 }

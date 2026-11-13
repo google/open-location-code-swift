@@ -121,7 +121,7 @@ let kMinShortCodeTruncation = 4
 /// The coordinates include the latitude and longitude of the lower left and
 /// upper right corners and the center of the bounding box for the area the
 /// code represents.
-public struct OpenLocationCodeArea: Sendable {
+public struct OpenLocationCodeArea: Sendable, Equatable, Hashable {
   /// The latitude of the SW corner in degrees.
   public let latitudeLo: Double
   /// The longitude of the SW corner in degrees.
