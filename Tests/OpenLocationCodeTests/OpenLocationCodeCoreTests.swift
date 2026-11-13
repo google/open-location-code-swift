@@ -171,6 +171,36 @@ class EncodingTests: XCTestCase {
     XCTAssert(testData.count > 0)
   }
 
+  /// Tests OpenLocationCode.locationToIntegers
+  func testConvertingDegrees() {
+    for(td) in testData {
+      let (gotLat, gotLng) = OpenLocationCode.locationToIntegers(
+          latitude: Double(td["lat"]!)!,
+          longitude: Double(td["lng"]!)!)
+      let expectedLat = Int64(td["latInt"]!)!
+      let expectedLng = Int64(td["lngInt"]!)!
+      // Due to floating point precision limitations, converted values may be
+      // 1 less than expected.
+      XCTAssertTrue(
+          expectedLat - 1 <= gotLat && gotLat <= expectedLat,
+          "Latitude conversion \(td["lat"]!): want \(expectedLat), got \(gotLat)")
+      XCTAssertTrue(
+          expectedLng - 1 <= gotLng && gotLng <= expectedLng,
+          "Longitude conversion \(td["lng"]!): want \(expectedLng), got \(gotLng)")
+    }
+  }
+
+  /// Tests OpenLocationCode.encodeIntegers
+  func testEncodingIntegers() {
+    for(td) in testData {
+      let encoded = OpenLocationCode.encodeIntegers(
+          latVal: Int64(td["latInt"]!)!,
+          lngVal: Int64(td["lngInt"]!)!,
+          codeLength: Int(td["length"]!)!)
+      XCTAssertEqual(encoded, td["code"]!)
+    }
+  }
+
   /// Tests OpenLocationCode.encode
   func testEncoding() {
     // Allow a small proportion of errors due to floating point.
@@ -193,6 +223,8 @@ class EncodingTests: XCTestCase {
   }
 
   static var allTests = [
+    ("testConvertingDegrees", testConvertingDegrees),
+    ("testEncodingIntegers", testEncodingIntegers),
     ("testEncoding", testEncoding),
   ]
 }

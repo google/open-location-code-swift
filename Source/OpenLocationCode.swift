@@ -43,6 +43,9 @@ let kPaddingCharacterString = String(kPaddingCharacter)
 /// The character set used to encode the values.
 let kCodeAlphabet = "23456789CFGHJMPQRVWX"
 
+/// Array representation of kCodeAlphabet for fast integer-indexed lookup.
+let kCodeAlphabetArray = Array(kCodeAlphabet)
+
 /// CharacterSet representation of kCodeAlphabet.
 let kCodeAlphabetCharset = CharacterSet.init(charactersIn: kCodeAlphabet)
 
@@ -87,6 +90,24 @@ public let kDefaultFullCodeLength = 11
 
 /// The maximum significant digits in a plus code.
 let kMaxCodeLength = 15
+
+/// Number of digits in the grid refinement section of a maximum-length code.
+let kGridCodeLength = kMaxCodeLength - kPairCodeLength
+
+/// Inverse (1/) of the precision of the final pair digits in degrees (20^3).
+let kPairPrecision: Int64 = 8_000
+
+/// Scale factor of the latitude grid refinement section (5^5).
+let kGridLatScale: Int64 = 3_125
+
+/// Scale factor of the longitude grid refinement section (4^5).
+let kGridLngScale: Int64 = 1_024
+
+/// Finest latitude precision in units per degree (20^3 * 5^5).
+let kFinalLatPrecision: Int64 = kPairPrecision * kGridLatScale
+
+/// Finest longitude precision in units per degree (20^3 * 4^5).
+let kFinalLngPrecision: Int64 = kPairPrecision * kGridLngScale
 
 /// Default truncation amount for short codes.
 public let kDefaultShortCodeTruncation = 4
@@ -378,18 +399,6 @@ public class OpenLocationCode {
     return min(90.0, max(-90.0, latitude))
   }
 
-  /// Compute the latitude precision value for a given code length. Lengths <=
-  /// 10 have the same precision for latitude and longitude, but lengths > 10
-  /// have different precisions due to the grid method having fewer columns than
-  /// rows.
-  internal static func computeLatitudePrecision(_ codeLength: Int) -> Double {
-    if codeLength <= 10 {
-      return pow(Double(20), Double(codeLength / -2 + 2))
-    }
-    return pow(20.0, -3.0)
-           / pow(Double(kGridRows), Double(codeLength - 10))
-  }
-
   /// Normalize a longitude into the range -180 to 180, not including 180.
   ///
   /// - Parameter longitude: A longitude in signed decimal degrees.
@@ -404,53 +413,103 @@ public class OpenLocationCode {
     return longitude
   }
 
-  /// Encode a location into a sequence of OLC lat/lng pairs.
-  /// This uses pairs of characters (longitude and latitude in that order) to
-  /// represent each step in a 20x20 grid. Each code, therefore, has 1/400th
-  /// the area of the previous code.
+  /// Convert a location in degrees into integer representations at the finest
+  /// grid precision.
   ///
   /// - Parameter latitude: A latitude in signed decimal degrees.
   /// - Parameter longitude: A longitude in signed decimal degrees.
+  /// - Returns: A tuple of `(latitude, longitude)` as positive `Int64` values.
+  internal static func locationToIntegers(latitude: Double,
+                                          longitude: Double) -> (Int64, Int64) {
+    let latitude = clipLatitude(latitude)
+    let longitude = normalizeLongitude(longitude)
+
+    let latMaxInt = Int64(kLatitudeMax) * kFinalLatPrecision
+    var latVal = Int64(floor(latitude * Double(kFinalLatPrecision)))
+    latVal += latMaxInt
+    if latVal < 0 {
+      latVal = 0
+    } else if latVal >= 2 * latMaxInt {
+      latVal = 2 * latMaxInt - 1
+    }
+
+    let lngMaxInt = Int64(kLongitudeMax) * kFinalLngPrecision
+    let lngRange = 2 * lngMaxInt
+    var lngVal = Int64(floor(longitude * Double(kFinalLngPrecision)))
+    lngVal += lngMaxInt
+    if lngVal < 0 {
+      lngVal = (lngVal % lngRange + lngRange) % lngRange
+    } else if lngVal >= lngRange {
+      lngVal = lngVal % lngRange
+    }
+
+    return (latVal, lngVal)
+  }
+
+  /// Encode a location, given as scaled positive integers, into an Open
+  /// Location Code.
+  ///
+  /// - Parameter latVal: Latitude as a positive integer scaled by
+  ///   `kFinalLatPrecision`.
+  /// - Parameter lngVal: Longitude as a positive integer scaled by
+  ///   `kFinalLngPrecision`.
   /// - Parameter codeLength: The number of significant digits in the output
   ///   code, not including any separator characters.
-  internal static func encodePairs(latitude: Double,
-                                   longitude: Double,
-                                   codeLength: Int) -> String {
+  /// - Returns: Open Location Code for the given integer coordinates, or `nil`
+  ///   if `codeLength` is invalid.
+  internal static func encodeIntegers(latVal: Int64,
+                                      lngVal: Int64,
+                                      codeLength: Int) -> String? {
+    if codeLength < 2
+      || (codeLength < kPairCodeLength && codeLength % 2 == 1) {
+      // 'Invalid Open Location Code length - '
+      return nil
+    }
+    let codeLength = min(codeLength, kMaxCodeLength)
+    var latVal = latVal
+    var lngVal = lngVal
+    var digits: [Character] = []
+    digits.reserveCapacity(kMaxCodeLength + 1)
 
-    var code: String = ""
-    // Adjust latitude and longitude so they fall into positive ranges.
-    var adjustedLatitude = latitude + kLatitudeMax
-    var adjustedLongitude = longitude + kLongitudeMax
-    // Count digits - can't use string length because it may include a separator
-    // character.
-    var digitCount = 0
-    while digitCount < codeLength {
-      // Provides the value of digits in this place in decimal degrees.
-      let placeValue = kPairResolutions[digitCount / 2]
-      // Do the latitude - gets the digit for this place and subtracts that for
-      // the next digit.
-      var digitValue:Int = Int(adjustedLatitude / placeValue)
-      adjustedLatitude -= Double(digitValue) * placeValue
-      code += String(kCodeAlphabet[digitValue])
-      digitCount += 1
-      // And do the longitude - gets the digit for this place and subtracts that
-      // for the next digit.
-      digitValue = Int(adjustedLongitude / placeValue)
-      adjustedLongitude -= Double(digitValue) * placeValue
-      code += String(kCodeAlphabet[digitValue])
-      digitCount += 1
-      // Should we add a separator here?
-      if digitCount == kSeparatorPosition && digitCount < codeLength {
-        code += String(kSeparator)
+    // Compute the grid part of the code if necessary.
+    if codeLength > kPairCodeLength {
+      let gridRows = Int64(kGridRows)
+      let gridCols = Int64(kGridColumns)
+      for _ in 0..<kGridCodeLength {
+        let latDigit = Int(latVal % gridRows)
+        let lngDigit = Int(lngVal % gridCols)
+        let ndx = latDigit * kGridColumns + lngDigit
+        digits.append(kCodeAlphabetArray[ndx])
+        latVal /= gridRows
+        lngVal /= gridCols
       }
+    } else {
+      latVal /= kGridLatScale
+      lngVal /= kGridLngScale
     }
-    while code.count < kSeparatorPosition {
-      code += "0"
+
+    // Compute the pair section of the code.
+    let base = Int64(kEncodingBase)
+    for _ in 0..<(kPairCodeLength / 2) {
+      digits.append(kCodeAlphabetArray[Int(lngVal % base)])
+      digits.append(kCodeAlphabetArray[Int(latVal % base)])
+      latVal /= base
+      lngVal /= base
     }
-    if code.count == kSeparatorPosition {
-      code += String(kSeparator)
+
+    digits.reverse()
+    digits.insert(kSeparator, at: kSeparatorPosition)
+
+    // If we don't need to pad the code, return the requested section.
+    if codeLength >= kSeparatorPosition {
+      return String(digits[0..<(codeLength + 1)])
     }
-    return code
+
+    // Pad and return the code up to and including the separator.
+    for i in codeLength..<kSeparatorPosition {
+      digits[i] = kPaddingCharacter
+    }
+    return String(digits[0...kSeparatorPosition])
   }
 
   /// Encode a location using the grid refinement method into an OLC string.
@@ -526,28 +585,11 @@ public class OpenLocationCode {
     guard latitude.isFinite && longitude.isFinite else {
       return nil
     }
-    var codeLength = codeLength
-    codeLength = min(codeLength, kMaxCodeLength)
-
-    // Ensure that latitude and longitude are valid.
-    var latitude = clipLatitude(latitude)
-    let longitude = normalizeLongitude(longitude)
-
-    // Latitude 90 needs to be adjusted to be just less, so the returned code
-    // can also be decoded.
-    if latitude == 90 {
-      latitude = latitude - Double(computeLatitudePrecision(codeLength))
-    }
-    var code = encodePairs(latitude: latitude,
-                           longitude: longitude,
-                           codeLength: min(codeLength, kPairCodeLength))
-    // If the requested length indicates we want grid refined codes.
-    if codeLength > kPairCodeLength {
-      code = code + encodeGrid(latitude: latitude,
-                               longitude: longitude,
-                               codeLength: codeLength - kPairCodeLength)
-    }
-    return code
+    let (latVal, lngVal) = locationToIntegers(latitude: latitude,
+                                              longitude: longitude)
+    return encodeIntegers(latVal: latVal,
+                          lngVal: lngVal,
+                          codeLength: codeLength)
   }
 
   /// Decode an OLC code made up of lat/lng pairs.
