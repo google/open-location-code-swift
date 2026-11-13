@@ -109,8 +109,4 @@ class OpenLocationCodeSwiftExampleTests: XCTestCase {
     XCTAssertNotNil(shortCode)
     XCTAssertNotNil(fullCode)
   }
-
-  static var allTests = [
-    ("testExamples", testExamples),
-  ]
 }

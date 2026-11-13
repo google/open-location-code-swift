@@ -186,13 +186,4 @@ class OpenLocationCodeAdditionalTests: XCTestCase {
           "")
     }
   }
-
-  static var allTests = [
-    ("testEncodeLengthValidity", testEncodeLengthValidity),
-    ("testMaxLength_Encoding", testMaxLength_Encoding),
-    ("testMaxLength_Decoding", testMaxLength_Decoding),
-    ("testMaxLength_Validity", testMaxLength_Validity),
-    ("testNormalizeLongitude", testNormalizeLongitude),
-    ("testNonFiniteAndHugeCoordinates", testNonFiniteAndHugeCoordinates),
-  ]
 }

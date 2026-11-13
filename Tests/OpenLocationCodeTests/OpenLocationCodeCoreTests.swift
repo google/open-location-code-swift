@@ -114,12 +114,6 @@ class ValidityTests: XCTestCase {
                      Bool(td["isShort"]!)!)
     }
   }
-
-  static var allTests = [
-    ("testValidCodes", testValidCodes),
-    ("testFullCodes", testFullCodes),
-    ("testShortCodes", testShortCodes),
-  ]
 }
 
 /// Tests the code shortening methods.
@@ -153,10 +147,6 @@ class ShortenTests: XCTestCase {
       }
     }
   }
-
-  static var allTests = [
-    ("testFullToShort", testFullToShort),
-  ]
 }
 
 /// Tests encoding.
@@ -221,12 +211,6 @@ class EncodingTests: XCTestCase {
         allowedErrorRate,
         "encode error rate \(errorRate) (\(errors)/\(testData.count)) exceeds \(allowedErrorRate)")
   }
-
-  static var allTests = [
-    ("testConvertingDegrees", testConvertingDegrees),
-    ("testEncodingIntegers", testEncodingIntegers),
-    ("testEncoding", testEncoding),
-  ]
 }
 
 /// Tests decoding.
@@ -269,8 +253,4 @@ class DecodingTests: XCTestCase {
                      "Failure with " + td["code"]!)
     }
   }
-
-  static var allTests = [
-    ("testDecoding", testDecoding),
-  ]
 }
