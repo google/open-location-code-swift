@@ -1,6 +1,6 @@
-// swift-tools-version:4.2
+// swift-tools-version: 6.0
 
-//===-- OpenLocationCodeTests.swift - Tests for OpenLocationCode.swift ----===//
+//===-- Package.swift - Swift Package Manager manifest --------------------===//
 //
 //  Copyright 2017 Google Inc.
 //
@@ -24,26 +24,30 @@
 
 import PackageDescription
 
-let packages = Package(
+let package = Package(
     name: "OpenLocationCode",
-
+    platforms: [
+        .iOS(.v12),
+        .macOS(.v10_13),
+        .tvOS(.v12),
+        .watchOS(.v4),
+        .visionOS(.v1),
+    ],
     products: [
         .library(
             name: "OpenLocationCode",
             targets: ["OpenLocationCode"]
-            ),
+        ),
     ],
     targets: [
         .target(
             name: "OpenLocationCode",
-            path: ".",
-            exclude: ["Source/OpenLocationCodeObjCBridge.swift", "Framework", "Tests", "test_data"],
-            sources: ["Source"]
+            path: "Source"
         ),
         .testTarget(
             name: "OpenLocationCodeTests",
-            dependencies: ["OpenLocationCode"],
-            exclude: ["OpenLocationCodeObjCTests"]
-        )
-    ]
+            dependencies: ["OpenLocationCode"]
+        ),
+    ],
+    swiftLanguageModes: [.v5, .v6]
 )
