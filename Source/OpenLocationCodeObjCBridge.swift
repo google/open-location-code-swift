@@ -33,7 +33,7 @@
 
 import Foundation
 
-#if !os(Linux)
+#if canImport(ObjectiveC)
 
 /// Convert between decimal degree coordinates and plus codes. Shorten and
 /// recover plus codes for a given reference location.
