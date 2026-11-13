@@ -42,17 +42,14 @@ class OLCTestHelper {
     var testData:Array<Dictionary<String, String>> = []
     var csvData: String?
 
-    // Tries to load CSV data from bundle.
-    #if !os(Linux)
+    // Loads CSV data from the SwiftPM resource bundle or Xcode test bundle.
+    #if SWIFT_PACKAGE
+    let testBundle = Bundle.module
+    #else
     let testBundle = Bundle(for: OLCTestHelper.self)
-    if let path = testBundle.path(forResource: filename, ofType: "csv") {
-      csvData = try? String(contentsOfFile: path)
-    }
     #endif
-    // Falls back to loading directly from the file.
-    if csvData == nil {
-      csvData =  try? String(contentsOfFile: "test_data/\(filename).csv", 
-                                   encoding: .utf8)
+    if let url = testBundle.url(forResource: filename, withExtension: "csv") {
+      csvData = try? String(contentsOf: url, encoding: .utf8)
     }
     // Parses data.
     guard let csv = csvData else {

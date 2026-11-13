@@ -46,7 +46,11 @@ let package = Package(
         ),
         .testTarget(
             name: "OpenLocationCodeTests",
-            dependencies: ["OpenLocationCode"]
+            dependencies: ["OpenLocationCode"],
+            exclude: ["test_data/syncData.sh"],
+            resources: [
+                .process("test_data"),
+            ]
         ),
     ],
     swiftLanguageModes: [.v5, .v6]

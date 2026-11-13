@@ -160,7 +160,7 @@
 				BE710F741F24F13200E5B525 /* validityTests.csv */,
 			);
 			name = test_data;
-			path = ../test_data;
+			path = OpenLocationCodeTests/test_data;
 			sourceTree = "<group>";
 		};
 		BE9C7A661F23C9F30067DAC8 = {
