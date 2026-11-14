@@ -1,5 +1,7 @@
 .DS_Store
+.git
 .build
+.swiftpm
 Packages
 Carthage
 xcuserdata/
