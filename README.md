@@ -1,19 +1,19 @@
 # Open Location Code for Swift and Objective-C
-[![Build Status](https://travis-ci.org/google/open-location-code-swift.svg?branch=master)](https://travis-ci.org/google/open-location-code-swift)
+[![CI](https://github.com/google/open-location-code-swift/actions/workflows/ci.yml/badge.svg)](https://github.com/google/open-location-code-swift/actions/workflows/ci.yml)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 Convert between decimal degree coordinates and Open Location Codes. Shorten
 and recover Open Location Codes for a given reference location.
 
 This repository is the Swift implementation of Open Location Code.
-It supports Swift and Objective-C projects on iOS, macOS, tvOS and
-watchOS, and Swift projects on Linux. The
-[master repository](https://github.com/google/open-location-code)
+It supports Swift and Objective-C projects on iOS, macOS, tvOS, watchOS,
+and visionOS, and Swift projects on Linux. The
+[main repository](https://github.com/google/open-location-code)
 has Open Location Code support for many other languages.
 
 ## About Open Location Codes
 
-[Open Location Codes](http://openlocationcode.com/) are short, 10-11 character
+[Open Location Codes](https://plus.codes/) are short, 10-11 character
 codes that can be used instead of street addresses. The codes can be generated
 and decoded offline, and use a reduced character set that minimises the chance
 of codes including words.
@@ -37,55 +37,107 @@ position from a 4x5 grid. This allows single-character refinements.
 
 ## Supported Environments
 
-This library is provided as a Swift and Objective-C Cocoa Framework
-for iOS, macOS, tvOS and watchOS, and as a pure Swift module
-for macOS and Linux.
+This library is provided as a Swift Package supporting Swift and Objective-C
+on iOS, macOS, tvOS, watchOS, and visionOS, and Swift on Linux, as well as a
+Cocoa Framework for Apple platforms.
 
 ## Swift Versions
 
+* Versions 4.x of Open Location Code for Swift require Swift 6.0+ (supporting
+  both Swift 5 and Swift 6 language modes).
 * Versions 3.x of Open Location Code for Swift are designed for Swift 5.0.
 * Versions 2.x of Open Location Code for Swift are designed for Swift 4.0.
 * Versions 1.x of Open Location Code for Swift were designed for Swift 3.2,
   but are no longer maintained.
 
+## Installation
+
+### Swift Package Manager
+
+In Xcode, select **File > Add Package Dependencies…**, enter the repository URL,
+and add the `OpenLocationCode` library to your target:
+
+```text
+https://github.com/google/open-location-code-swift.git
+```
+
+Or add it directly to your `Package.swift` manifest:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/google/open-location-code-swift.git", from: "4.0.0"),
+],
+targets: [
+    .target(
+        name: "YourTarget",
+        dependencies: [
+            .product(name: "OpenLocationCode", package: "open-location-code-swift"),
+        ]
+    ),
+]
+```
+
+### Carthage
+
+Add the following to your `Cartfile`:
+
+```text
+github "google/open-location-code-swift" ~> 4.0
+```
+
+Then build the XCFramework:
+
+```bash
+carthage update --use-xcframeworks
+```
+
+### CocoaPods
+
+```ruby
+pod 'OpenLocationCodeFramework', '~> 4.0'
+```
+
+> Note: Public CocoaPods Trunk goes permanently read-only in December 2026;
+> new projects should use Swift Package Manager.
+
 ## Building
+
+### Swift Package
+
+To build the Swift package:
+```bash
+swift build
+```
+
+Testing the Swift package:
+```bash
+swift test
+```
+
+A Dockerfile is included to build and test the Swift package in a Linux
+container:
+```bash
+docker build .
+```
 
 ### Cocoa Framework
 
 To build the Framework:
 ```bash
-xcodebuild -project OpenLocationCode.xcodeproj -scheme OpenLocationCode_iOS -configuration Release
-xcodebuild -project OpenLocationCode.xcodeproj -scheme OpenLocationCode_macOS -configuration Release
-xcodebuild -project OpenLocationCode.xcodeproj -scheme OpenLocationCode_tvOS -configuration Release
-xcodebuild -project OpenLocationCode.xcodeproj -scheme OpenLocationCode_watchOS -configuration Release
+xcodebuild -project OpenLocationCode.xcodeproj -scheme OpenLocationCode_iOS -destination 'generic/platform=iOS' -configuration Release
+xcodebuild -project OpenLocationCode.xcodeproj -scheme OpenLocationCode_macOS -destination 'generic/platform=macOS' -configuration Release
+xcodebuild -project OpenLocationCode.xcodeproj -scheme OpenLocationCode_tvOS -destination 'generic/platform=tvOS' -configuration Release
+xcodebuild -project OpenLocationCode.xcodeproj -scheme OpenLocationCode_watchOS -destination 'generic/platform=watchOS' -configuration Release
 ```
 
 Or, if you have [Carthage](https://github.com/Carthage/Carthage) installed:
 ```bash
-carthage build --no-skip-current
+carthage build --no-skip-current --use-xcframeworks
 ```
 
 Testing the framework:
 ```bash
-xcodebuild test -project OpenLocationCode.xcodeproj -scheme OpenLocationCode_macOS -destination 'platform=OS X,arch=x86_64'
-```
-
-### Swift Module
-
-To build the pure Swift module:
-```bash
-swift build
-```
-
-Testing the pure Swift module:
-```bash
-swift test
-```
-
-A Dockerfile is included to build and run the pure Swift module in
-a Linux container:
-```bash
-docker build .
+xcodebuild test -project OpenLocationCode.xcodeproj -scheme OpenLocationCode_macOS -destination 'platform=macOS'
 ```
 
 ## Swift Code Example
@@ -160,20 +212,3 @@ NSString *recoveredCode = [OLCConverter recoverNearestWithShortcode:@"CWC8+Q48"
                                                  referenceLongitude:-122.1];
 NSLog(@"Recovered Full Code: %@", recoveredCode);
 ```
-
-## Testing the CI Locally
-
-To run the Travis CI tests locally, install:
-
-```
-gem install wwtd
-gem install xcpretty
-```
-
-And run:
-```
-wwtd
-```
-
-Your version of Xcode and macOS will need to match the Travis `osx_image`
-[configuration](https://docs.travis-ci.com/user/reference/osx/#macos-version).
